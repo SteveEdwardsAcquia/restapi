@@ -289,7 +289,7 @@ function restapi_page_callback(ResourceConfigurationInterface $resource) {
     return MENU_NOT_FOUND;
   }
 
-  $auth     = $resource->invokeAuthenticationService($user, $request);
+  $auth = $resource->invokeAuthenticationService($user, $request);
 
   try {
     $account = $auth->authenticate();
