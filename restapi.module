@@ -283,7 +283,6 @@ function restapi_page_callback(ResourceConfigurationInterface $resource) {
 
   $request  = restapi_get_request();
   $path     = current_path();
-  $resource = restapi_get_resource($path);
 
   if (!$resource) {
     return MENU_NOT_FOUND;
@@ -307,7 +306,7 @@ function restapi_page_callback(ResourceConfigurationInterface $resource) {
 
   $api = new Api($account, $request);
 
-  return $api->call($request->getMethod(), current_path());
+  return $api->call($request->getMethod(), $path);
 }
 
 
