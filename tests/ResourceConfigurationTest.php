@@ -133,6 +133,18 @@ class ResourceConfigurationTest extends PHPUnit_Framework_TestCase {
 
 
   /**
+   * Ensures getDeprecationForMethod() returns null if the method does not exist.
+   *
+   */
+  public function testGetDeprecationForMethodReturnsNullForInvalidMethod() {
+
+    $config = new ResourceConfiguration('path/to/resource', 'my_module', MockAnnotatedResource::class, $this->auth);
+
+    $this->assertNull($config->getDeprecationForMethod('invalidMethod'));
+  }
+
+
+  /**
    * Ensures stability parsing works as expected.
    *
    * @dataProvider stabilityAnnotationProvider
@@ -143,6 +155,18 @@ class ResourceConfigurationTest extends PHPUnit_Framework_TestCase {
     $config = new ResourceConfiguration('path/to/resource', 'my_module', MockAnnotatedResource::class, $this->auth);
 
     $this->assertEquals($stability, $config->getStabilityForMethod($method));
+  }
+
+
+  /**
+   * Ensures getStabilityForMethod() returns null if the method does not exist.
+   *
+   */
+  public function testGetStabilityForMethodReturnsNullForInvalidMethod() {
+
+    $config = new ResourceConfiguration('path/to/resource', 'my_module', MockAnnotatedResource::class, $this->auth);
+
+    $this->assertNull($config->getDeprecationForMethod('invalidMethod'));
   }
 
 
