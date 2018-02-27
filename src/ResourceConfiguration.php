@@ -224,11 +224,6 @@ class ResourceConfiguration implements ResourceConfigurationInterface {
   public function getDeprecationForMethod($method) {
     $class = new ReflectionClass($this->getClass());
 
-    if (!$class->hasMethod($method)) {
-      $message = sprintf('The %s method does not exist for the class %s', $method, $class);
-      throw new ClassMethodNotValidException($message);
-    }
-
     $doc_comment = $class->getMethod($method)->getDocComment();
     $deprecated  = preg_match('/\* @deprecated(?:\h+(?:[vV]?([0-9]+))?)?(?:\h+(.*)?)?$/m', $doc_comment, $matches);
 
@@ -250,11 +245,6 @@ class ResourceConfiguration implements ResourceConfigurationInterface {
   public function getStabilityForMethod($method) {
 
     $class = new ReflectionClass($this->getClass());
-
-    if (!$class->hasMethod($method)) {
-      $message = sprintf('The %s method does not exist for the class %s', $method, $class);
-      throw new ClassMethodNotValidException($message);
-    }
 
     $doc_comment = $class->getMethod($method)->getDocComment();
     $stability   = preg_match('/\* @stability\h+(.*)/m', $doc_comment, $matches);

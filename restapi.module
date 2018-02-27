@@ -152,17 +152,23 @@ function restapi_restapi_response($path, ResourceConfigurationInterface $resourc
   $api_name = str_replace(' ', '-', variable_get('restapi_api_name', 'API'));
   $method   = _restapi_get_versioned_method($resource, $request);
 
-  if ($deprecation = $resource->getDeprecationForMethod($method)) {
-
-    $dep_parts = ['yes'];
-    $dep_parts[] = 'version=' . ($deprecation['version'] ?: variable_get('restapi_current_version', 1));
-
-    if ($deprecation['reason']) {
-      $dep_parts[] = 'reason=' . $deprecation['reason'];
+    try {
+        $deprecation = $resource->getDeprecationForMethod($method);
+    } catch (ClassMethodNotValidException $e) {
+        $response = $response->withHeader('X-' . $api_name . '-NotValid');
+        return $response;
     }
 
-    $response = $response->withHeader('X-' . $api_name . '-Deprecated', implode('; ', $dep_parts));
-  }
+    if ($deprecation) {
+      $dep_parts = ['yes'];
+      $dep_parts[] = 'version=' . ($deprecation['version'] ?: variable_get('restapi_current_version', 1));
+
+      if ($deprecation['reason']) {
+        $dep_parts[] = 'reason=' . $deprecation['reason'];
+      }
+
+      $response = $response->withHeader('X-' . $api_name . '-Deprecated', implode('; ', $dep_parts));
+    }
 
   $stability = $resource->getStabilityForMethod($method);
   $response  = $response->withHeader('X-' . $api_name . '-Stability', $stability);
