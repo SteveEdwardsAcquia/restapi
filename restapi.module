@@ -153,6 +153,7 @@ function restapi_restapi_response($path, ResourceConfigurationInterface $resourc
   $method   = _restapi_get_versioned_method($resource, $request);
 
   if ($deprecation = $resource->getDeprecationForMethod($method)) {
+
     $dep_parts = ['yes'];
     $dep_parts[] = 'version=' . ($deprecation['version'] ?: variable_get('restapi_current_version', 1));
 
